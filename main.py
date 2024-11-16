@@ -7,7 +7,7 @@ def main():
 
     # Build the graph
     graph = build_graph(data)
-    
+    print('Enter the starting location and the destination you want to travel to.')
     # Get start and end cities from user input
     print("From: (UPPERCASE ONLY)")
     start_city = input().strip().upper()
