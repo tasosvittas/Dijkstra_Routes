@@ -1,82 +1,41 @@
-import pandas as pd
-import heapq
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
-# Load the CSV file, specifying only the first five columns
-df = pd.read_csv('routes.csv', usecols=[0, 1, 2, 3, 4], header=None)
+from dijkstra_solution import read_csv, build_graph, dijkstra
 
-# Display the result
-print(df)
+# Execution
+def main():
+    # Read data from the CSV file
+    data = read_csv('routes.csv')
+
+    # Build the graph
+    graph = build_graph(data)
+    
+    # Get start and end cities from user input
+    print("From: (UPPERCASE ONLY)")
+    start_city = input().strip().upper()
+    print("To: (UPPERCASE ONLY)")
+    end_city = input().strip().upper()
+
+    # Validate input
+    if start_city not in graph:
+        print(f"The location '{start_city}', you want to start from, doesn't exist.")
+        return
+    if end_city not in graph:
+        print(f"The location '{end_city}' doesn't exist.")
+        return
+
+    # Find shortest path by time
+    shortest_time, path_time = dijkstra(graph, start_city, end_city, weight_type="time")
+    if path_time:
+        print(f"Shortest path by time: {path_time} with total time {shortest_time}")
+    else:
+        print(f"No path found between {start_city} and {end_city} by time.")
+
+    # Find shortest path by cost
+    shortest_cost, path_cost = dijkstra(graph, start_city, end_city, weight_type="cost")
+    if path_cost:
+        print(f"Shortest path by cost: {path_cost} with total cost {shortest_cost}")
+    else:
+        print(f"No path found between {start_city} and {end_city} by cost.")
 
 
-
-class Graph:
-    def __init__(self):
-        # Αποθηκεύουμε τον γράφο ως dictionary of lists, όπου κάθε κόμβος έχει λίστα από γειτονικούς κόμβους και βάρη.
-        self.graph = {}
-
-    def add_edge(self, from_node, to_node, weight):
-        # Προσθέτουμε το βάρος για το μονοπάτι από τον from_node στον to_node
-        if from_node not in self.graph:
-            self.graph[from_node] = []
-        self.graph[from_node].append((to_node, weight))
-
-        # Αν ο γράφος είναι μη κατευθυνόμενος, προσθέτουμε και την αντίστροφη διαδρομή
-        if to_node not in self.graph:
-            self.graph[to_node] = []
-        self.graph[to_node].append((from_node, weight))
-
-    def dijkstra(self, start, end):
-        # Αρχικοποιούμε τις αποστάσεις με το άπειρο
-        distances = {node: float('inf') for node in self.graph}
-        distances[start] = 0
-
-        # Προτεραιότητα με χρήση heapq
-        priority_queue = [(0, start)]
-
-        # Προηγούμενοι κόμβοι για την ανίχνευση της διαδρομής
-        previous_nodes = {node: None for node in self.graph}
-
-        while priority_queue:
-            current_distance, current_node = heapq.heappop(priority_queue)
-
-            # Αν φτάσουμε στον στόχο, σταματάμε
-            if current_node == end:
-                break
-
-            # Επεξεργαζόμαστε τους γείτονες του τρέχοντος κόμβου
-            for neighbor, weight in self.graph[current_node]:
-                distance = current_distance + weight
-
-                # Εάν βρούμε μια πιο σύντομη διαδρομή προς τον γείτονα
-                if distance < distances[neighbor]:
-                    distances[neighbor] = distance
-                    previous_nodes[neighbor] = current_node
-                    heapq.heappush(priority_queue, (distance, neighbor))
-
-        # Εύρεση της συντομότερης διαδρομής αναδρομικά μέσω των προηγούμενων κόμβων
-        path = []
-        current = end
-        while current is not None:
-            path.append(current)
-            current = previous_nodes[current]
-        path = path[::-1]  # Αναστρέφουμε τη διαδρομή
-
-        return distances[end], path if distances[end] != float('inf') else None
-
-# Παράδειγμα χρήσης
-graph = Graph()
-graph.add_edge('A', 'B', 4)
-graph.add_edge('A', 'C', 2)
-graph.add_edge('B', 'C', 5)
-graph.add_edge('B', 'D', 10)
-graph.add_edge('C', 'D', 3)
-
-start_node = 'A'
-end_node = 'D'
-distance, path = graph.dijkstra(start_node, end_node)
-
-if path:
-    print(f"Η συντομότερη απόσταση από τον κόμβο {start_node} στον κόμβο {end_node} είναι {distance} και η διαδρομή είναι {' -> '.join(path)}.")
-else:
-    print(f"Δεν υπάρχει διαδρομή από τον κόμβο {start_node} στον κόμβο {end_node}.")
+if __name__ == "__main__":
+    main()

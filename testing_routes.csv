@@ -1,5 +1,6 @@
-A, B, Train, 3.5, 100
-A, C, Bus, 4.0, 80
-B, C, Plane, 1.0, 200
-B, D, Train, 2.0, 50
-C, D, Bus, 1.5, 30
+ath,ioa,plane,40,50
+ath,larisa,plane,30,20
+ioa,skg,plane,80,20
+ioa,xalk,plane,15,20
+larisa,skg,plane,60,20
+xalk,skg,plane,15,10
