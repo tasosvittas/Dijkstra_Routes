@@ -21,7 +21,7 @@ def main():
     if end_city not in graph:
         print(f"The location '{end_city}' doesn't exist.")
         return
-
+    
     # Find shortest path by time
     shortest_time, path_time = dijkstra(graph, start_city, end_city, weight_type="time")
     if path_time:
