@@ -74,8 +74,8 @@ def load_graph_from_csv(filename):
 filename = 'routes.csv'  # Αντικατέστησε με το όνομα του αρχείου CSV
 graph = load_graph_from_csv(filename)
 
-start_city = 'India'
-end_city = 'Guatemala'
+start_city = 'London'
+end_city = 'India'
 distance, path = graph.dijkstra(start_city, end_city)
 
 if path:

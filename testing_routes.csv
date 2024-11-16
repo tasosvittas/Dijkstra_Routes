@@ -1,0 +1,5 @@
+A, B, Train, 3.5, 100
+A, C, Bus, 4.0, 80
+B, C, Plane, 1.0, 200
+B, D, Train, 2.0, 50
+C, D, Bus, 1.5, 30
