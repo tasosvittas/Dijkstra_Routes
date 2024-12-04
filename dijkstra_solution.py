@@ -30,17 +30,17 @@ def build_graph(data):
             graph[to_city] = []
         graph[from_city].append((to_city, travel_mode, time, cost))
         graph[to_city].append((from_city, travel_mode, time, cost))  # Assuming undirected graph
-    print(graph)
+    # print(graph)
     return graph
 
 
 # Dijkstra's Algorithm
 def dijkstra(graph, start, end, weight_type="time"):
-    pq = [(0, start, [])]  # Priority queue: (accumulated_weight, current_city, path)
+    pq = [(0, start, [], [])]  # Priority queue: (accumulated_weight, current_city, path)
     visited = set()
     
     while pq:
-        accumulated_weight, current_city, path = heapq.heappop(pq)
+        accumulated_weight, current_city, path, travel_mode_path = heapq.heappop(pq)
         
         if current_city in visited:
             continue
@@ -49,11 +49,11 @@ def dijkstra(graph, start, end, weight_type="time"):
         path = path + [current_city]
         
         if current_city == end:
-            return accumulated_weight, path
+            return accumulated_weight, path, travel_mode_path
         
         for neighbor, travel_mode, time, cost in graph[current_city]:
             if neighbor not in visited:
                 weight = time if weight_type == "time" else cost
-                heapq.heappush(pq, (accumulated_weight + weight, neighbor, path))
+                heapq.heappush(pq, (accumulated_weight + weight, neighbor, path, travel_mode_path + [travel_mode]))
     
     return float("inf"), []  # Return infinity and empty path if no path found

@@ -23,16 +23,18 @@ def main():
         return
     
     # Find shortest path by time
-    shortest_time, path_time = dijkstra(graph, start_city, end_city, weight_type="time")
+    shortest_time, path_time, travel_mode_path1 = dijkstra(graph, start_city, end_city, weight_type="time")
     if path_time:
         print(f"Shortest path by time: {path_time} with total time {shortest_time}")
+        print(f"To travel from {start_city} to {end_city} you have to take: {travel_mode_path1} ")
     else:
         print(f"No path found between {start_city} and {end_city} by time.")
 
     # Find shortest path by cost
-    shortest_cost, path_cost = dijkstra(graph, start_city, end_city, weight_type="cost")
+    shortest_cost, path_cost, travel_mode_path2= dijkstra(graph, start_city, end_city, weight_type="cost")
     if path_cost:
         print(f"Shortest path by cost: {path_cost} with total cost {shortest_cost}")
+        print(f"To travel from {start_city} to {end_city} you have to take: {travel_mode_path2} ")
     else:
         print(f"No path found between {start_city} and {end_city} by cost.")
 
