@@ -30,7 +30,7 @@ def build_graph(data):
             graph[to_city] = []
         graph[from_city].append((to_city, travel_mode, time, cost))
         graph[to_city].append((from_city, travel_mode, time, cost))  # Assuming undirected graph
-    # print(graph)
+    print(graph)
     return graph
 
 
