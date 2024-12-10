@@ -1,14 +1,14 @@
 import csv
 import heapq
 
-# Function to read data from a CSV file
+#read data from a CSV file
 def read_csv(filename):
     csv_data = []
     with open(filename, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file)
         for row in reader:
-            if len(row) < 5:  # Skip malformed or empty rows
-                print(f"Skipping malformed row: {row}")  # Debugging
+            if len(row) < 5:  # Skip rows i dont want (mikroteres tou epithimitou mikous)
+                print(f"Skipping row: {row}") 
                 continue
             #gia kanonikopoihsh twn from_city kai to_city row[0].strip().upper()
             from_city = row[0].strip().upper()
@@ -20,7 +20,7 @@ def read_csv(filename):
     return csv_data
 
 
-# Function to build the graph
+# xtizw ton grafo
 def build_graph(data):
     graph = {}
     for from_city, to_city, travel_mode, time, cost in data:
@@ -29,31 +29,31 @@ def build_graph(data):
         if to_city not in graph:
             graph[to_city] = []
         graph[from_city].append((to_city, travel_mode, time, cost))
-        graph[to_city].append((from_city, travel_mode, time, cost))  # Assuming undirected graph
+        graph[to_city].append((from_city, travel_mode, time, cost))  #undirected graph
     # print(graph)
     return graph
 
 
 # Dijkstra's Algorithm
 def dijkstra(graph, start, end, weight_type="time"):
-    pq = [(0, start, [], [])]  # Priority queue: (accumulated_weight, current_city, path)
+    pq = [(0, start, [], [])]  # Pqueue: (accumulated_weight, current_city, path, travel_path)
     visited = set()
     
     while pq:
         accumulated_weight, current_city, path, travel_mode_path = heapq.heappop(pq)
         
+        # elegxw an exw episkefthei
         if current_city in visited:
             continue
-        
+
         visited.add(current_city)
         path = path + [current_city]
-        
         if current_city == end:
             return accumulated_weight, path, travel_mode_path
-        
+            
         for neighbor, travel_mode, time, cost in graph[current_city]:
             if neighbor not in visited:
                 weight = time if weight_type == "time" else cost
                 heapq.heappush(pq, (accumulated_weight + weight, neighbor, path, travel_mode_path + [travel_mode]))
     
-    return float("inf"), []  # Return infinity and empty path if no path found
+    return float("inf"), []  #an den vrw path epistrefw inf & empty path
